@@ -17,8 +17,14 @@ class Link extends Model
     }
 
     public function setLogoAttribute($logo) {
-        $newLogoName = uniqid() . '_' . 'logo' . '.' . $logo->extension();
-        $logo->move(public_path('/Extralinks/logo/'), $newLogoName);
-        return $this->attributes['logo'] = '/Extralinks/logo/' . $newLogoName;
+        if (is_string($logo)){
+            return $this->attributes['logo'] =$logo;
+        }
+        else {
+            $newLogoName = uniqid() . '_' . 'logo' . '.' . $logo->extension();
+            $logo->move(public_path('/Extralinks/logo/'), $newLogoName);
+            return $this->attributes['logo'] = '/Extralinks/logo/' . $newLogoName;
+        }
     }
+
 }

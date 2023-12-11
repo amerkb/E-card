@@ -17,8 +17,14 @@ class Section extends Model
         return $this->belongsTo(Profile::class);
     }
     public function setMediaAttribute($media) {
-        $newMediaName = uniqid() . '_' . 'media' . '.' . $media->extension();
-        $media->move(public_path('media/user'), $newMediaName);
-        return $this->attributes['media'] = '/media/user/' . $newMediaName;
+        if (is_string($media)){
+            return $this->attributes['media'] = $media;
+        }
+        else {
+            $newMediaName = uniqid() . '_' . 'media' . '.' . $media->extension();
+            $media->move(public_path('media/user'), $newMediaName);
+            return $this->attributes['media'] = '/media/user/' . $newMediaName;
+        }
     }
+
 }
