@@ -8,7 +8,9 @@ use App\Http\Requests\UpdateLinkRequest;
 use App\Http\Resources\LinkResource;
 use App\Models\Link;
 use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LinkController extends Controller
 {
@@ -64,7 +66,11 @@ class LinkController extends Controller
             $query->whereBetween('created_at', [$startDate, $endDate]);
         }
         $data = $query->first();
-       
+
         return response(['data' => isset($data) ? ['name'=> $data->name_link, 'link' => $data->link, 'views' => $data->views] : 0]);
+    }
+    public  function get_links_with_visit(){
+           $user= User::find(Auth::id());
+      return  LinkResource::collection($user->profile->links);
     }
 }

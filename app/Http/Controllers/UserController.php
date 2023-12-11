@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EditUserRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\ProfileResource;
 use App\Http\Resources\ProfilyResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -15,10 +16,9 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    public function show($uuid) {
-        $user = User::where('uuid',$uuid)->with(['profile','profile.links','profile.primary','profile.sections'])->first();
-        return UserResource::make($user);
-        
+    public function show(User $user) {
+        return ProfileResource::make($user->profile);
+
     }
     public function index() {
         return UserResource::collection(User::all());
@@ -27,13 +27,13 @@ class UserController extends Controller
     public function store(RegisterRequest $request) {
 
         $request->validated();
-        
+
         $user = User::create(array_merge($request->except('password'),
             ['password' => bcrypt($request->password)]
         ));
-        
+
         return response(['user' => UserResource::make($user)]);
-        
+
     }
 
     public function update(EditUserRequest $request , User $user) {

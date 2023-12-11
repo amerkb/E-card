@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('profile_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->string('name_link')->nullable();
             $table->string('link')->nullable();
-            $table->bigInteger('views')->nullable();
+            $table->bigInteger('views')->default(0);
             $table->string('logo')->nullable();
             $table->boolean('available')->default(true);
             $table->timestamps();
