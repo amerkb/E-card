@@ -24,9 +24,9 @@ class Profile extends Model
     }
     public function links():HasMany
     {
-        return $this->hasMany(Link::class); 
+        return $this->hasMany(Link::class);
     }
-    public function primary()
+    public function primary(): BelongsToMany
     {
         return $this->belongsToMany(PrimaryLink::class,'profile_primary_links')->withPivot('value','views','available');
     }
@@ -47,5 +47,5 @@ class Profile extends Model
     $photo->move(public_path('images/user/'), $newPhotoName);
     return $this->attributes['photo'] = '/images/user/' . $newPhotoName;
     }
-    
+
 }

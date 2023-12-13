@@ -71,6 +71,9 @@ class LinkController extends Controller
     }
     public  function get_links_with_visit(){
            $user= User::find(Auth::id());
-      return  LinkResource::collection($user->profile->links);
+       $primaryLinks = LinkResource::collection($user->profile->primary);
+        $links = LinkResource::collection($user->profile->links);
+
+       return $mergedLinks = $primaryLinks->concat($links);
     }
 }
