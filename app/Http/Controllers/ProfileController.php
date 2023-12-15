@@ -30,7 +30,8 @@ class ProfileController extends Controller
     }
 
     public function store(ProfileRequest $request) {
-        $profile = auth()->user()->profile()->create($request->safe()->except('primaryLinks','secondLinks','sections'));               
+
+        $profile = auth()->user()->profile()->create($request->safe()->except('primaryLinks','secondLinks','sections'));
         if (isset($request->primaryLinks)) {
             foreach($request->primaryLinks as $primaryLink) {
                ProfilePrimaryLink::create([
@@ -75,8 +76,8 @@ class ProfileController extends Controller
                     'value' => $primaryLink['value']
                 ]);
             }
-            
-            
+
+
         }
         if (isset($request->secondLinks)) {
            $profile->links()->delete();
@@ -87,8 +88,8 @@ class ProfileController extends Controller
                 'link' => $link['link'],
                 'logo' => $link['logo']
             ]);
-           } 
-            
+           }
+
         }
         if (isset($request->sections)) {
             $profile->sections()->delete();
@@ -100,8 +101,8 @@ class ProfileController extends Controller
                     'media' => $section['media']
                 ]);
             }
-            
-            
+
+
         }
 
         return response()->json(['data' => new ProfileResource($profile),'message' => 'Data Saved Succcessfully']);
@@ -117,7 +118,7 @@ class ProfileController extends Controller
         return $profile;
     }
     public function getViews_profile(Request $request) {
-        
+
         $year = $request->year;
         $month = $request->month;
         $day = $request->day;
@@ -160,5 +161,5 @@ class ProfileController extends Controller
     }
 
 
-    
+
 }
