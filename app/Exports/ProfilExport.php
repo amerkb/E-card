@@ -13,7 +13,7 @@ class ProfilExport implements FromCollection
     {
         return Voucher::with("customer")->get();
     }
-    
+
     public function map($voucher): array
     {
 
