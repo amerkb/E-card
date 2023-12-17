@@ -27,8 +27,9 @@ return new class extends Migration
             $table->string('bgColor')->nullable();
             $table->string('buttonColor')->nullable();
             $table->string('phoneNum')->nullable();
+            $table->string('phoneNumSecondary')->nullable();
             $table->string('email')->nullable();
-            $table->bigInteger('views')->nullable();
+            $table->bigInteger('views')->default(0);
             $table->timestamps();
         });
     }

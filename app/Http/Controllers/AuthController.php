@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangeCodeRequest;
 use App\Http\Requests\ChangeEmailRequest;
+use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -58,6 +59,12 @@ class AuthController extends Controller
     public function change_email(ChangeEmailRequest $request){
         $user= User::find(Auth::id());
         $user->update(["email"=>$request->email]);
+        return response(["message"=>"success"]);
+    }
+    public function change_password(ChangePasswordRequest $request){
+
+        $user= User::find(Auth::id());
+        $user->update(["password"=>$request->password]);
         return response(["message"=>"success"]);
     }
 

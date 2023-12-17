@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('profile_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('primary_link_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->string('views')->nullable();
+            $table->string('views')->default(0);
             $table->string('value')->nullable();
             $table->boolean('available')->default(true);
             $table->timestamps();

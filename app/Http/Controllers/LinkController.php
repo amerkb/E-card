@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AddLinkRequest;
 use App\Http\Requests\UpdateLinkRequest;
 use App\Http\Resources\LinkResource;
+use App\Http\Resources\PrimaryLinkResource;
+use App\Http\Resources\viewLinkResource;
+use App\Http\Resources\viewPrimaryLinkResource;
 use App\Models\Link;
 use App\Models\Profile;
 use App\Models\User;
@@ -71,8 +74,8 @@ class LinkController extends Controller
     }
     public  function get_links_with_visit(){
            $user= User::find(Auth::id());
-       $primaryLinks = LinkResource::collection($user->profile->primary);
-        $links = LinkResource::collection($user->profile->links);
+       $primaryLinks = viewPrimaryLinkResource::collection($user->profile->primary);
+        $links = viewLinkResource::collection($user->profile->links);
 
        return $mergedLinks = $primaryLinks->concat($links);
     }

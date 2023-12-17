@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PrimaryLinkResource extends JsonResource
+class viewLinkResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +17,7 @@ class PrimaryLinkResource extends JsonResource
         return [
             'id' => $this->id,
             'logo' => url($this->logo),
-            'name' => $this->name,
-            'placeholder' => $this->placeholder,
-            'view'=>$this->pivot->views
+            'view'=>intval($this->views)
         ];
     }
 }

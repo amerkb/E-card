@@ -32,18 +32,12 @@ class ProfileRequest extends FormRequest
             'cover' => 'nullable|image|mimes:jpeg,jpg,png',
             'photo' => 'nullable|image|mimes:jpeg,jpg,png',
             'theme_id' => 'nullable|exists:themes,id',
-            'bgColor' => 'nullable|string|max:255',
-            'buttonColor' => 'nullable|string|max:255',
+//            'bgColor' => 'nullable|string|max:255',
+//            'buttonColor' => 'nullable|string|max:255',
             'phoneNum' => 'nullable|string|max:255',
+            'phoneNumSecondary' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
-            'primaryLinks.*.id' => 'sometimes|exists:primary_links,id',
-            'primaryLinks.*.value' => 'sometimes|string|max:255',
-            'secondLinks.*.name_link' => 'sometimes|string|max:255',
-            'secondLinks.*.link' => 'sometimes|string|max:255',
-            'secondLinks.*.logo' => 'sometimes',
-            'sections.*.title' => 'sometimes|string|max:255',
-            'sections.*.name_of_file' => 'sometimes|string',
-            'sections.*.media' => 'sometimes'
+
         ];
     }
 

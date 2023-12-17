@@ -33,6 +33,7 @@ Route::get('/user/{user:uuid}',[UserController::class,'show']);
 
 Route::middleware('auth:sanctum')->group(function() {
 
+Route::post('/change_password',[AuthController::class,'change_password']);
     Route::middleware('isAdmin')->group(function() {
         Route::resource('user',UserController::class)->only('index','store','destroy');
         Route::patch('user/{user}',[UserController::class,'update']);
@@ -52,7 +53,10 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::prefix('profile')->group(function(){
 
-        Route::post('/',[ProfileController::class,'store']);
+        Route::post('/create_personal_data',[ProfileController::class,'create_personal_data']);
+        Route::post('/create_links',[ProfileController::class,'create_links']);
+        Route::post('/create_other_data',[ProfileController::class,'create_other_data']);
+
         Route::post('/{profile}',[ProfileController::class,'update']);
         Route::delete('/{profile}/primary_link/{profilePrimaryLink}',[PrimaryLinkController::class,'DeletePrimaryLink']);
         // Route::post('/{profile}/primary_link/{profilePrimaryLink}',[PrimaryLinkController::class,'UpdatePrimaryLink']);
@@ -63,11 +67,11 @@ Route::middleware('auth:sanctum')->group(function() {
         Route::post('/{profile}/primary_link/{profilePrimaryLink}/visit',[ProfileController::class,'visitPrimary']);
         Route::get('/{profile}/allLinks',[ProfileController::class,'get_All_links']);
 
+            Route::post('link/{link}/visit',[LinkController::class,'visitLink']);
         Route::prefix('{profile}/link')->group(function () {
             Route::delete('/{link}',[LinkController::class,'DeleteLink']);
             Route::post('/',[LinkController::class,'AddLink']);
             Route::patch('/{link}/changeAvailable',[LinkController::class,'changeAvailable']);
-            Route::post('/{link}/visit',[LinkController::class,'visitLink']);
             Route::post('/{link}/views',[LinkController::class,'getViews_link']);
         });
 

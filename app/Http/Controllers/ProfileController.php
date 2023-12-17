@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EditProfileRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Http\Requests\step2ProfileRequest;
+use App\Http\Requests\step3ProfileRequest;
 use App\Http\Resources\LinkResource;
+use App\Http\Resources\ProfilePrimaryLinkResource;
 use App\Http\Resources\ProfileResource;
 use App\Http\Resources\SectionResource;
 use App\Http\Resources\ShowLinksResource;
@@ -13,7 +16,9 @@ use App\Models\PrimaryLink;
 use App\Models\Profile;
 use App\Models\ProfilePrimaryLink;
 use App\Models\Section;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class ProfileController extends Controller
@@ -29,9 +34,17 @@ class ProfileController extends Controller
          return new ProfileResource($p);
     }
 
-    public function store(ProfileRequest $request) {
+    public function create_personal_data(ProfileRequest $request) {
 
-        $profile = auth()->user()->profile()->create($request->safe()->except('primaryLinks','secondLinks','sections'));
+        $profile = auth()->user()->profile()->create($request->validated());
+        return $profile;
+//        return response()->json(['data' => new ProfileResource($profile) , 'message' => 'Data Saved Succcessfully']);
+
+    }
+    public function create_links(step2ProfileRequest $request)
+    {
+          $user= User::find(Auth::id());
+          $profile=$user->profile;
         if (isset($request->primaryLinks)) {
             foreach($request->primaryLinks as $primaryLink) {
                ProfilePrimaryLink::create([
@@ -41,6 +54,7 @@ class ProfileController extends Controller
                ]);
             }
         }
+
         if (isset($request->secondLinks)) {
             foreach($request->secondLinks as $link) {
                 Link::create([
@@ -61,11 +75,24 @@ class ProfileController extends Controller
                 ]);
             }
         }
-
-        return response()->json(['data' => new ProfileResource($profile) , 'message' => 'Data Saved Succcessfully']);
-
+        return response(     [       'primary_links' => ProfilePrimaryLinkResource::collection($profile->primary),
+            'second_links' => LinkResource::collection($profile->links),
+            'section' => SectionResource::collection($profile->sections),
+        ]);
     }
-    public function update(EditProfileRequest $request ,Profile $profile) {
+
+    public function create_other_data(step3ProfileRequest $request){
+        $user= User::find(Auth::id());
+        $profile=$user->profile;
+        $profile->update($request->validated());
+        return response()->json(
+            [
+               "profile" => $profile
+            ]
+            ,
+            201);
+    }
+        public function update(EditProfileRequest $request ,Profile $profile) {
         // abort_if($profile->user_id != auth()->user()->id , 403 ,'unauthorized');
         $profile->update($request->safe()->except('primaryLinks','secondLinks','sections'));
 
