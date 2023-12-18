@@ -36,16 +36,24 @@ class Profile extends Model
     }
 
     public function setCoverAttribute($cover)
-    {
-       $newCoverName = uniqid() . '_' . 'cover' . '.' . $cover->extension();
-       $cover->move(public_path('images/user/'), $newCoverName);
-       return $this->attributes['cover'] = '/images/user/' . $newCoverName;
+    {if ($cover !=null) {
+        $newCoverName = uniqid() . '_' . 'cover' . '.' . $cover->extension();
+        $cover->move(public_path('images/user/'), $newCoverName);
+        return $this->attributes['cover'] = '/images/user/' . $newCoverName;
+    }
+    else{
+        return $this->attributes['cover']=null;
+    }
     }
     public function setPhotoAttribute($photo)
     {
-    $newPhotoName = uniqid() . '_' . 'photo' . '.' . $photo->extension();
-    $photo->move(public_path('images/user/'), $newPhotoName);
-    return $this->attributes['photo'] = '/images/user/' . $newPhotoName;
-    }
+        if ($photo!=null) {
+            $newPhotoName = uniqid() . '_' . 'photo' . '.' . $photo->extension();
+            $photo->move(public_path('images/user/'), $newPhotoName);
+            return $this->attributes['photo'] = '/images/user/' . $newPhotoName;
+        }
+        else{
+            return $this->attributes['photo']=null;
+        }}
 
 }
