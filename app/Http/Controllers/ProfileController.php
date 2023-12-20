@@ -94,23 +94,17 @@ class ProfileController extends Controller
     }
         public function update(EditProfileRequest $request ,Profile $profile) {
         // abort_if($profile->user_id != auth()->user()->id , 403 ,'unauthorized');
-        $profile->update([
-            "theme_id"=>$request->theme_id??NULL,
-            "firstName"=>$request->firstName??NULL,
-            "lastName"=>$request->lastName??NULL,
-            "jobTitle"=>$request->jobTitle??NULL,
-            "businessName"=>$request->businessName??NULL,
-            "location"=>$request->location??NULL,
-            "bio"=>$request->bio??NULL,
-            "cover"=>$request->cover??NULL,
-            "photo"=>$request->photo??NULL,
-            "bgColor"=>$request->bgColor??NULL,
-            "buttonColor"=>$request->buttonColor??NULL,
-            "phoneNum"=>$request->phoneNum??NULL,
-            "phoneNumSecondary"=>$request->phoneNumSecondary??NULL,
-
-        ]);
-
+            $profile->update($request->safe()->except('primaryLinks','secondLinks','sections'));
+            if (!$request->cover ) {
+                $profile->update([
+                    "cover" => $request->cover ?? NULL,
+                ]);
+            }
+            if (!$request->photo ) {
+                $profile->update([
+                    "photo" => $request->photo ?? NULL
+                ]);
+            }
         if (isset($request->primaryLinks)) {
             $profile->primary()->detach();
             foreach($request->primaryLinks as $primaryLink) {
