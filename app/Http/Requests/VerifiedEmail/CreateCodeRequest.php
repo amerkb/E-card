@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\user\VerifiedEmail;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ChangeCodeRequest extends FormRequest
+class CreateCodeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class ChangeCodeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => ['required', 'numeric'],
+            'email' => ['required'],
 
         ];
     }

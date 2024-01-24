@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Http;
 
 class EmailService
 {
-    public static function sendHtmlEmail(  $userCode, $userEmail)
+    public static function sendHtmlEmail($userCode, $userEmail)
     {
-        $subject = 'Welcome to ' . htmlspecialchars("E-card");
+        $subject = 'Welcome to '.htmlspecialchars('E-card');
         $body = '
                 <html>
                 <head>
@@ -32,7 +32,7 @@ class EmailService
                         <h1>E-card</h1>
                         <p>Thank you for joining us ! Here are your credentials:</p>
                         <ul>
-                            <li><strong>Code:</strong> ' . htmlspecialchars($userCode) . '</li>
+                            <li><strong>Code:</strong> '.htmlspecialchars($userCode).'</li>
 
                         </ul>
                     </div>
@@ -43,7 +43,7 @@ class EmailService
         $apiKey = 'rm1GEVrZlW3HEgjR/CJjQRUYp3m7xoocfHlgW5SuNf2kyb1+1wPYQZUlycrkfZTMq0fuO5T1o+Tl0G0aWdhGp+f1Yd/JPmgGSi7UPCnzbMfqHOpt7H1WggMzq7lAP9Z9VAfQpdwkDD2HBY1F38n5qkex4V3jGCHq/YnNJC5mxt0=';
 
         $endpoint = 'htmlsend';
-        $url = $apiUrl . $endpoint;
+        $url = $apiUrl.$endpoint;
 
         $data = [
             'RecipientEmail' => $userEmail,

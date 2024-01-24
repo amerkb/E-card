@@ -19,7 +19,7 @@ class PrimaryLinkResource extends JsonResource
             'logo' => url($this->logo),
             'name' => $this->name,
             'placeholder' => $this->placeholder,
-            'view'=>$this->pivot->views
+            'view' => $this->pivot->views,
         ];
     }
 }

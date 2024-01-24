@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\AddLinkRequest;
 use App\Http\Requests\UpdateLinkRequest;
 use App\Http\Resources\LinkResource;
-use App\Http\Resources\PrimaryLinkResource;
 use App\Http\Resources\viewLinkResource;
 use App\Http\Resources\viewPrimaryLinkResource;
 use App\Models\Link;
@@ -17,50 +15,69 @@ use Illuminate\Support\Facades\Auth;
 
 class LinkController extends Controller
 {
-    public function getLinks(Profile $profile) {
-        abort_if(auth()->user()->id != $profile->user_id , 403 , 'unauthorized');
+    public function getLinks(Profile $profile)
+    {
+        abort_if(auth()->user()->id != $profile->user_id, 403, 'unauthorized');
+
         return LinkResource::collection($profile->links()->get());
     }
-    public function DeleteLink(Profile $profile , Link $link) {
-        abort_if(auth()->user()->id != $profile->user_id , 403 , 'unauthorized');
+
+    public function DeleteLink(Profile $profile, Link $link)
+    {
+        abort_if(auth()->user()->id != $profile->user_id, 403, 'unauthorized');
         $link->delete();
+
         return response()->json(['message' => 'Done']);
     }
-    public function UpdateLink(Profile $profile , Link $link , UpdateLinkRequest $request) {
-        abort_if($profile->user_id != auth()->user()->id , 403 ,'unauthorized');
-        $link->update($request->validated() ,['profile_id' => $profile->id]);
-        return response()->json(['data' => new LinkResource($link),'message' => 'Data Saved Succcessfully']);
+
+    public function UpdateLink(Profile $profile, Link $link, UpdateLinkRequest $request)
+    {
+        abort_if($profile->user_id != auth()->user()->id, 403, 'unauthorized');
+        $link->update($request->validated(), ['profile_id' => $profile->id]);
+
+        return response()->json(['data' => new LinkResource($link), 'message' => 'Data Saved Succcessfully']);
 
     }
-    public function AddLink(Profile $profile ,AddLinkRequest $request) {
-        $link = Link::create(array_merge($request->validated() ,['profile_id' => $profile->id]));
-        return response()->json(['data' => new LinkResource($link),'message' => 'Data Saved Succcessfully']);
+
+    public function AddLink(Profile $profile, AddLinkRequest $request)
+    {
+        $link = Link::create(array_merge($request->validated(), ['profile_id' => $profile->id]));
+
+        return response()->json(['data' => new LinkResource($link), 'message' => 'Data Saved Succcessfully']);
 
     }
-    public function visitLink(Profile $profile,Link $link) {
-        $link->update(['views' => $link->views +1]);
+
+    public function visitLink(Profile $profile, Link $link)
+    {
+        $link->update(['views' => $link->views + 1]);
+
         return $link;
     }
-    public function changeAvailable (Profile $profile ,Link $link) {
-        abort_if(auth()->user()->id != $profile->user_id && $profile->id != $link->profile_id,403,'unauthorized');
+
+    public function changeAvailable(Profile $profile, Link $link)
+    {
+        abort_if(auth()->user()->id != $profile->user_id && $profile->id != $link->profile_id, 403, 'unauthorized');
         $link->update(['available' => ! $link->available]);
+
         return response()->json(['message' => 'update Available successfully']);
     }
-    public function getViews_link(Request $request,Profile $profile, Link $link) {
+
+    public function getViews_link(Request $request, Profile $profile, Link $link)
+    {
         $year = $request->year;
         $month = $request->month;
         $day = $request->day;
         $startDate = $request->start_date;
         $endDate = $request->end_date;
-        $query = Link::where('id',$link->id);
+        $query = Link::where('id', $link->id);
 
         if ($year && $month && $day) {
             $query->whereYear('created_at', $year)
-                    ->whereMonth('created_at', $month)
-                    ->whereDay('created_at', $day);
+                ->whereMonth('created_at', $month)
+                ->whereDay('created_at', $day);
         } elseif ($year && $month) {
             $query->whereYear('created_at', $year)
-                  ->whereMonth('created_at', $month);
+                ->whereMonth('created_at', $month);
         } elseif ($year) {
             $query->whereYear('created_at', $year);
         } elseif ($day) {
@@ -70,13 +87,15 @@ class LinkController extends Controller
         }
         $data = $query->first();
 
-        return response(['data' => isset($data) ? ['name'=> $data->name_link, 'link' => $data->link, 'views' => $data->views] : 0]);
+        return response(['data' => isset($data) ? ['name' => $data->name_link, 'link' => $data->link, 'views' => $data->views] : 0]);
     }
-    public  function get_links_with_visit(){
-           $user= User::find(Auth::id());
-       $primaryLinks = viewPrimaryLinkResource::collection($user->profile->primary);
+
+    public function get_links_with_visit()
+    {
+        $user = User::find(Auth::id());
+        $primaryLinks = viewPrimaryLinkResource::collection($user->profile->primary);
         $links = viewLinkResource::collection($user->profile->links);
 
-       return $mergedLinks = $primaryLinks->concat($links);
+        return $mergedLinks = $primaryLinks->concat($links);
     }
 }

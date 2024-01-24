@@ -17,7 +17,7 @@ class viewLinkResource extends JsonResource
         return [
             'id' => $this->id,
             'logo' => url($this->logo),
-            'view'=>intval($this->views)
+            'view' => intval($this->views),
         ];
     }
 }

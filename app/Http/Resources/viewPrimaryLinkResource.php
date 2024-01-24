@@ -17,7 +17,7 @@ class viewPrimaryLinkResource extends JsonResource
         return [
             'id' => $this->id,
             'logo' => url($this->logo),
-            'view'=>intval($this->pivot->views)
+            'view' => intval($this->pivot->views),
         ];
     }
 }

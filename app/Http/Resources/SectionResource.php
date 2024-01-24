@@ -19,8 +19,8 @@ class SectionResource extends JsonResource
             'title' => $this->title,
             'name_of_file' => $this->name_of_file,
             'media' => url($this->media),
-            'available' => $this->when($request->bearerToken(),$this->available),
-             
+            'available' => $this->when($request->bearerToken(), $this->available),
+
         ];
     }
 }

@@ -9,9 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-
 class User extends Authenticatable implements MustVerifyEmail
-
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -29,17 +27,19 @@ class User extends Authenticatable implements MustVerifyEmail
         'code',
     ];
 
-    public function profile():HasOne
+    public function profile(): HasOne
     {
         return $this->hasOne(Profile::class);
     }
+
     public function primaryLinks()
     {
-        return $this->hasManyThrough(PrimaryLink::class,Profile::class);
+        return $this->hasManyThrough(PrimaryLink::class, Profile::class);
     }
+
     public function links()
     {
-        return $this->hasManyThrough(Link::class,Profile::class);
+        return $this->hasManyThrough(Link::class, Profile::class);
     }
 
     protected $hidden = [
@@ -54,7 +54,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        //        'password' => 'hashed',
     ];
-
 }

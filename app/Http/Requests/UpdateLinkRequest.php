@@ -11,7 +11,7 @@ class UpdateLinkRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true ;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class UpdateLinkRequest extends FormRequest
         return [
             'link' => 'nullable|string',
             'name_link' => 'nullable|string|max:255',
-            'logo' => 'sometimes|image|max:2048'
+            'logo' => 'sometimes|image|max:2048',
         ];
     }
 }

@@ -19,8 +19,8 @@ class ProfilePrimaryLinkResource extends JsonResource
             'name' => $this->name,
             'logo' => url($this->logo),
             'value' => $this->pivot->value,
-            'available' => $this->when($request->bearerToken(), isset($this->pivot->available) ? $this->pivot->available : 0        ),
-            'views' => $this->when($request->bearerToken(), isset($this->pivot->views) ? $this->pivot->views : 0        ),
-            ];
+            'available' => $this->when($request->bearerToken(), isset($this->pivot->available) ? $this->pivot->available : 0),
+            'views' => $this->when($request->bearerToken(), isset($this->pivot->views) ? $this->pivot->views : 0),
+        ];
     }
 }

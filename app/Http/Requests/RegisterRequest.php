@@ -24,20 +24,21 @@ class RegisterRequest extends FormRequest
         return [
             'userName' => 'required|string',
             'password' => 'required|min:6|max:24|string',
-            'uuid' => 'required|string|unique:users,uuid'
+            'uuid' => 'required|string|unique:users,uuid',
         ];
     }
+
     public function messages(): array
-{
-   return [
-       'email.required' => 'The email field is required.',
-       'email.email' => 'The email must be a valid email address.',
-       'email.unique' => 'The email has already been taken.',
-       'password.required' => 'The password field is required.',
-       'password.min' => 'The password must be at least 6 characters.',
-       'password.max' => 'The password may not be greater than 24 characters.',
-       'uuid.required' => 'The uuid field is required.',
-       'uuid.unique' => 'The uuid has already been taken.',
-   ];
-}
+    {
+        return [
+            'email.required' => 'The email field is required.',
+            'email.email' => 'The email must be a valid email address.',
+            'email.unique' => 'The email has already been taken.',
+            'password.required' => 'The password field is required.',
+            'password.min' => 'The password must be at least 6 characters.',
+            'password.max' => 'The password may not be greater than 24 characters.',
+            'uuid.required' => 'The uuid field is required.',
+            'uuid.unique' => 'The uuid has already been taken.',
+        ];
+    }
 }

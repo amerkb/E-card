@@ -22,7 +22,7 @@ class UpdateThemeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => ['image' ,'mimes:png,jpg,jpeg']
+            'image' => ['image', 'mimes:png,jpg,jpeg'],
 
         ];
     }

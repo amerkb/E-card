@@ -22,7 +22,7 @@ class ThemeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => ['required' , 'image' ,'mimes:png,jpg,jpeg']
+            'image' => ['required', 'image', 'mimes:png,jpg,jpeg'],
         ];
     }
 }

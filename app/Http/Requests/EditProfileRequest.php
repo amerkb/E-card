@@ -44,7 +44,7 @@ class EditProfileRequest extends FormRequest
             'sections.*.id' => 'sometimes|exists:sections,id',
             'sections.*.title' => 'sometimes|string|max:255',
             'sections.*.name_of_file' => 'sometimes|string',
-            'sections.*.media' => 'sometimes'
+            'sections.*.media' => 'sometimes',
         ];
     }
 }

@@ -14,9 +14,9 @@ class ThemeResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return[
+        return [
             'id' => $this->id,
-            'image' => url($this->image)
+            'image' => url($this->image),
         ];
     }
 }

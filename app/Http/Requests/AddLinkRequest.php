@@ -24,7 +24,7 @@ class AddLinkRequest extends FormRequest
         return [
             'link' => 'required|string',
             'name_link' => 'required|string|max:255',
-            'logo' => 'sometimes|image|max:2048'
+            'logo' => 'sometimes|image|max:2048',
         ];
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class step2ProfileRequest extends FormRequest
 {
@@ -30,8 +29,7 @@ class step2ProfileRequest extends FormRequest
             'secondLinks.*.logo' => 'sometimes',
             'sections.*.title' => 'sometimes|string|max:255',
             'sections.*.name_of_file' => 'sometimes|string',
-            'sections.*.media' => 'sometimes'
+            'sections.*.media' => 'sometimes',
         ];
     }
-
 }

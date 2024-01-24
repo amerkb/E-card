@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class step3ProfileRequest extends FormRequest
 {
@@ -29,5 +28,4 @@ class step3ProfileRequest extends FormRequest
 
         ];
     }
-
 }

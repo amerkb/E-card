@@ -33,9 +33,9 @@ class ProfileResource extends JsonResource
             'primary_links' => ProfilePrimaryLinkResource::collection($this->primary),
             'second_links' => LinkResource::collection($this->links),
             'section' => SectionResource::collection($this->sections),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            
+            'created_at' => $this->created_at->format('Y-m-d'),
+            'updated_at' => $this->updated_at->format('Y-m-d'),
+
         ];
     }
 }

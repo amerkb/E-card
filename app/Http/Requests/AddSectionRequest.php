@@ -24,7 +24,7 @@ class AddSectionRequest extends FormRequest
         return [
             'title' => 'sometimes|string|max:255',
             'name_of_file' => 'sometimes|string',
-            'media' => 'sometimes|file|image|mimes:png,jpg,pdf,mp4'
+            'media' => 'sometimes|file|image|mimes:png,jpg,pdf,mp4',
         ];
     }
 }

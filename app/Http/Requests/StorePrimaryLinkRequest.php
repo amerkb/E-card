@@ -22,7 +22,7 @@ class StorePrimaryLinkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'value' => 'sometimes|string'
+            'value' => 'sometimes|string',
         ];
     }
 }
