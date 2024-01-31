@@ -10,7 +10,6 @@ use App\Http\Resources\LinkResource;
 use App\Http\Resources\ProfilePrimaryLinkResource;
 use App\Http\Resources\ProfileResource;
 use App\Http\Resources\SectionResource;
-use App\Http\Resources\ShowLinksResource;
 use App\Models\Link;
 use App\Models\Profile;
 use App\Models\ProfilePrimaryLink;
@@ -158,51 +157,11 @@ class ProfileController extends Controller
         return response()->json(['data' => new ProfileResource($profile), 'message' => 'Data Saved Succcessfully']);
     }
 
-    public function destroy(Profile $profile)
-    {
-        abort_if($profile->user_id != auth()->user()->id, 403, 'unauthorized');
-        $profile->delete();
-
-        return response()->json(['message' => 'Successfully Deleted Profile'], 200);
-    }
-
     public function visitProfile(Profile $profile)
     {
         $profile->update(['views' => $profile->views + 1]);
 
         return $profile;
-    }
-
-    public function getViews_profile(Request $request)
-    {
-
-        $year = $request->year;
-        $month = $request->month;
-        $day = $request->day;
-        $startDate = $request->start_date;
-        $endDate = $request->end_date;
-        $profile = Profile::where('user_id', auth()->user()->id);
-
-        if ($year && $month && $day) {
-            $profile->whereYear('created_at', $year)
-                ->whereMonth('created_at', $month)
-                ->whereDay('created_at', $day)->select('views');
-        } elseif ($year && $month) {
-            $profile->whereYear('created_at', $year)
-                ->whereMonth('created_at', $month)->select('views');
-        } elseif ($year) {
-            $profile->whereYear('created_at', $year)->select('views');
-        } elseif ($day) {
-            $profile->whereDay('created_at', $day)->select('views');
-        } elseif ($startDate && $endDate) {
-            $profile->whereBetween('created_at', [$startDate, $endDate])->select('views');
-        }
-        $data = $profile->first();
-        if (! $data) {
-            return response(['views' => 0]);
-        }
-
-        return response(['views' => $data->views]);
     }
 
     public function visitPrimary(Profile $profile, $primaryLink)
@@ -224,21 +183,6 @@ class ProfileController extends Controller
             // Handle the case where the ProfilePrimaryLink is not found
             return response(['msg' => 'ProfilePrimaryLink not found'], 404);
         }
-    }
-
-    public function changeAvailableP_Link(Profile $profile, ProfilePrimaryLink $profilePrimaryLink)
-    {
-        abort_if($profile->user_id != auth()->user()->id, 403, 'unauthorized');
-        $profilePrimaryLink->update(['available' => ! $profilePrimaryLink->available]);
-
-        return response()->json(['message' => 'update Available successfully']);
-    }
-
-    public function get_All_links(Profile $profile)
-    {
-        abort_if($profile->user_id != auth()->user()->id, 403, 'unauthorized');
-
-        return new ShowLinksResource($profile->load(['links', 'primary']));
     }
 
     public function creates_profiles(Request $request)
@@ -393,15 +337,17 @@ class ProfileController extends Controller
         $user = Profile::find($request->profile_id);
         $user->created_at = Carbon::now();
         $user->save();
+
         return response()->json(['message' => 'Updated successfully']);
     }
+
     public function get_profiles_expiration()
     {
         $profiles = Profile::all();
         $filteredUsers = $profiles->filter(function ($user) {
-           return Carbon::now() >=  Carbon::parse($user->created_at)->addYears(1);
+            return Carbon::now() >= Carbon::parse($user->created_at)->addYears(1);
         });
+
         return ProfileResource::collection($filteredUsers);
     }
-
 }

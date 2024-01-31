@@ -18,8 +18,6 @@ class GenerationController extends Controller
     {
         $links = Generation::all();
 
-
-
         //         Create a new Excel file
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -68,14 +66,14 @@ class GenerationController extends Controller
      */
     public function store(Request $request)
     {
-        $lastGeneration = Generation::MAX('id')??0;
+        $lastGeneration = Generation::MAX('id') ?? 0;
         $links = [];
 
         // Perform the operations or code you want to measure
 
         for ($i = 0; $i < $request->number; $i++) {
             $links[$i] = [
-               'link' => 'link/rate/'.$lastGeneration + 1 + $i,
+                'link' => 'link/rate/'.$lastGeneration + 1 + $i,
             ];
 
         }
@@ -125,20 +123,17 @@ class GenerationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function create_value( Request $request)
+    public function create_value(Request $request)
     {
-      $generation = Generation::where('link',$request->link)->first();
-        $generation->update(['value'=>$request->value]);
+        $generation = Generation::where('link', $request->link)->first();
+        $generation->update(['value' => $request->value]);
+
         return $generation;
     }
 
-    public function show( Request $request)
+    public function show(Request $request)
     {
-       return $generation = Generation::where('link',$request->link)->first();
-
+        return $generation = Generation::where('link', $request->link)->first();
 
     }
-
-
-
 }
