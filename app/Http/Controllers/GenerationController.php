@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Generation;
 use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use ZipArchive;
 
 class GenerationController extends Controller
 {
@@ -16,12 +15,9 @@ class GenerationController extends Controller
     {
         $links = Generation::all();
 
-
-return view('pdf_template',['links'=>$links]);
-
+        return view('pdf_template', ['links' => $links]);
 
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -34,7 +30,7 @@ return view('pdf_template',['links'=>$links]);
         // Perform the operations or code you want to measure
 
         for ($i = 0; $i < $request->number; $i++) {
-           $link= 'link/rate/'.$lastGeneration + 1 + $i;
+            $link = 'link/rate/'.$lastGeneration + 1 + $i;
 
             $qrCode = QrCode::format('svg')
                 ->size(500)
@@ -46,8 +42,8 @@ return view('pdf_template',['links'=>$links]);
             }
             file_put_contents($path, $qrCode);
             $links[$i] = [
-                'link' =>$link,
-                'QR'=>$fileName
+                'link' => $link,
+                'QR' => $fileName,
             ];
 
         }
@@ -59,6 +55,13 @@ return view('pdf_template',['links'=>$links]);
     {
         return $generation = Generation::where('link', $request->link)->first();
 
+    }
+    public function create_value(Request $request)
+    {
+        $generation = Generation::where('link', $request->link)->first();
+        $generation->update(['value' => $request->value]);
+
+        return $generation;
     }
 
 }

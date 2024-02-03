@@ -25,7 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'uuid',
         'is_admin',
         'code',
-        'email_verified_at'
+        'email_verified_at',
     ];
 
     public function profile(): HasOne

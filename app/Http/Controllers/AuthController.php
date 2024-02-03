@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\VerifiedEmail\ChangeEmailRequest;
-use App\Http\Requests\VerifiedEmail\VerifiedCodeRequest;
 use App\Http\Requests\VerifiedEmail\CreateCodeRequest;
+use App\Http\Requests\VerifiedEmail\VerifiedCodeRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\Email\EmailService;
