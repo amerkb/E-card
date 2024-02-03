@@ -199,7 +199,7 @@ class ProfileController extends Controller
             $users[$i] = [
                 'id' => $lastUser + 1 + $i,
                 'password' => md5($password[$i]),
-                'userName' => 'x tag'.$lastUser + 1 + $i,
+                'userName' => 'X-tag'.$lastUser + 1 + $i,
                 'uuid' => Str::uuid(),
                 'is_admin' => false,
             ];
@@ -213,7 +213,7 @@ class ProfileController extends Controller
 
         // Set headers
         $sheet->setCellValue('A1', 'user_id');
-        $sheet->setCellValue('B1', 'X tag');
+        $sheet->setCellValue('B1', 'X-tag');
         $sheet->setCellValue('C1', 'Password');
         $sheet->setCellValue('D1', 'uuid');
         $sheet->setCellValue('E1', 'link');

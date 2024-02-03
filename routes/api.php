@@ -23,7 +23,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
 Route::get('/profile/{profile}', [ProfileController::class, 'show']);
 Route::get('/user/{user:uuid}', [UserController::class, 'show']);
-Route::post('/checkforemail', [AuthController::class, 'check']);
+Route::get('/check_for_email', [AuthController::class, 'check']);
 Route::post('/create_code', [AuthController::class, 'create_code']);
 Route::post('/check_code', [AuthController::class, 'check_code']);
 Route::post('/change_password', [AuthController::class, 'change_password']);
@@ -39,7 +39,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('get_value_for_Link', [GenerationController::class, 'show']);
         Route::post('generation', [GenerationController::class, 'store']);
         Route::put('create_value', [GenerationController::class, 'create_value']);
-        Route::get('generation', [GenerationController::class, 'index']);
         Route::post('creates_profiles', [ProfileController::class, 'creates_profiles']);
         Route::get('get_profiles', [ProfileController::class, 'get_profiles']);
         Route::resource('user', UserController::class)->only('index', 'store', 'destroy');
@@ -53,7 +52,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('P_link/{primaryLink}', [PrimaryLinkController::class, 'destroy']);
     });
     Route::get('get_links_with_visit', [LinkController::class, 'get_links_with_visit']);
-    Route::post('change_email', [AuthController::class, 'change_email']);
+    Route::put('change_email', [AuthController::class, 'change_email']);
     Route::prefix('profile')->group(function () {
         Route::post('/create_personal_data', [ProfileController::class, 'create_personal_data']);
         Route::post('/create_links', [ProfileController::class, 'create_links']);

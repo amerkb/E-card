@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('generations', function (Blueprint $table) {
             $table->id();
             $table->string('link');
+            $table->string('QR');
             $table->string('value')->nullable();
             $table->timestamps();
         });

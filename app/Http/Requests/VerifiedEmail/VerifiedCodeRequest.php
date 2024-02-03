@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\user\VerifiedEmail;
+namespace App\Http\Requests\VerifiedEmail;
 
 use Illuminate\Foundation\Http\FormRequest;
 

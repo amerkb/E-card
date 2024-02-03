@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ChangeEmailRequest;
+
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\LoginRequest;
-use App\Http\Requests\user\VerifiedEmail\CreateCodeRequest;
-use App\Http\Requests\user\VerifiedEmail\VerifiedCodeRequest;
+use App\Http\Requests\VerifiedEmail\ChangeEmailRequest;
+use App\Http\Requests\VerifiedEmail\VerifiedCodeRequest;
+use App\Http\Requests\VerifiedEmail\CreateCodeRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\Email\EmailService;
@@ -79,7 +80,7 @@ class AuthController extends Controller
     public function check_code(VerifiedCodeRequest $request)
     {
         // Retrieve the user based on the email and code provided in the request
-        $user = User::where('email', $request->email)->where('code', $request->code)->first();
+        $user = User::where('email', $request->username)->where('code', $request->code)->first();
         if (! $user) {
             $user = User::where('username', $request->username)->where('code', $request->code)->first();
         }
