@@ -36,10 +36,10 @@ return view('pdf_template',['links'=>$links]);
         for ($i = 0; $i < $request->number; $i++) {
            $link= 'link/rate/'.$lastGeneration + 1 + $i;
 
-            $qrCode = QrCode::format('jpeg')
+            $qrCode = QrCode::format('svg')
                 ->size(500)
                 ->generate($link);
-            $fileName = 'QR/link_rate'.$lastGeneration + 1 + $i.'.jpeg';
+            $fileName = 'QR/link_rate'.$lastGeneration + 1 + $i.'.svg';
             $path = public_path($fileName);
             if (! file_exists(dirname($path))) {
                 mkdir(dirname($path), 0755, true);
