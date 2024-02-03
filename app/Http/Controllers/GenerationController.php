@@ -39,7 +39,7 @@ return view('pdf_template',['links'=>$links]);
             $qrCode = QrCode::format('jpeg')
                 ->size(500)
                 ->generate($link);
-            $fileName = 'link_rate'.$lastGeneration + 1 + $i.'.jpeg';
+            $fileName = 'QR/link_rate'.$lastGeneration + 1 + $i.'.jpeg';
             $path = public_path($fileName);
             if (! file_exists(dirname($path))) {
                 mkdir(dirname($path), 0755, true);
