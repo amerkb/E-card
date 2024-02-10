@@ -56,6 +56,7 @@ class GenerationController extends Controller
         return $generation = Generation::where('link', $request->link)->first();
 
     }
+
     public function create_value(Request $request)
     {
         $generation = Generation::where('link', $request->link)->first();
@@ -63,5 +64,4 @@ class GenerationController extends Controller
 
         return $generation;
     }
-
 }
