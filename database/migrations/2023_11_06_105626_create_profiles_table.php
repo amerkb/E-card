@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('theme_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->string('firstName');
-            $table->string('lastName');
+            $table->string('firstName')->nullable();
+            $table->string('lastName')->nullable();
+            $table->string('isPersonal')->nullable();
             $table->string('jobTitle')->nullable();
             $table->string('businessName')->nullable();
             $table->text('location')->nullable();

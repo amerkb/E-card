@@ -22,8 +22,8 @@ class ProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
+            'firstName' => 'nullable|string|max:255',
+            'lastName' => 'nullable|string|max:255',
             'jobTitle' => 'nullable|string|max:255',
             'businessName' => 'nullable|string|max:255',
             'location' => 'nullable|string|max:255',
@@ -36,6 +36,7 @@ class ProfileRequest extends FormRequest
             'phoneNum' => 'nullable|string|max:255',
             'phoneNumSecondary' => 'nullable|string|max:255',
             'email' => 'nullable|email|max:255',
+            'isPersonal'=>'nullable|string|max:255'
 
         ];
     }

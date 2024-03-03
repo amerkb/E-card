@@ -38,16 +38,6 @@ class AuthController extends Controller
 
                 return response($res, 201);
             }
-            if ($user && Hash::check($request->password, $user->password)) {
-                $token = $user->createToken('apiToken')->plainTextToken;
-                $res = [
-                    'user' => new UserResource($user),
-                    'token' => $token,
-                ];
-
-                return response($res, 201);
-            }
-
             return response([
                 'msg' => 'Invalid username or password',
             ], 401);
