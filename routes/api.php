@@ -41,6 +41,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('create_value', [GenerationController::class, 'create_value']);
         Route::post('creates_profiles', [ProfileController::class, 'creates_profiles']);
         Route::get('get_profiles', [ProfileController::class, 'get_profiles']);
+        Route::get('get_profile_by_id', [ProfileController::class, 'get_profile_by_id']);
+        Route::get('get_profile_by_phone', [ProfileController::class, 'get_profile_by_phone']);
         Route::resource('user', UserController::class)->only('index', 'store', 'destroy');
         Route::patch('user/{user}', [UserController::class, 'update']);
         Route::get('theme', [ThemeController::class, 'index'])->withoutMiddleware(['isAdmin']);

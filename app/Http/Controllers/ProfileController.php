@@ -262,6 +262,7 @@ class ProfileController extends Controller
         $users = User::with('profile')->where('id', '>=', $request->start)
             ->where('id', '<=', $request->end)
             ->get();
+
         //         Create a new Excel file
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -304,7 +305,7 @@ class ProfileController extends Controller
             $sheet->setCellValue('K'.$row, $user->profile->email ?? 'NULL');
             $sheet->setCellValue('L'.$row, $user->uuid);
             $sheet->setCellValue('M'.$row, 'https://user.x-tag.tech/?user='.$user->uuid);
-            if (! empty($user->profile->primary)) {
+            if (!$user->profile->primary->isEmpty()) {
                 $leteer = 'M';
                 foreach ($user->profile->primary as $primaryLink) {
                     $sheet->setCellValue(++$leteer.$row, $primaryLink->name);
@@ -313,7 +314,7 @@ class ProfileController extends Controller
                 }
             }
             // Set cell styling and spacing
-            $cellRange = 'A'.$row.':Z'.$row;
+            $cellRange = 'A'.$row.':CA'.$row;
             $sheet->getStyle($cellRange)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
             $sheet->getStyle($cellRange)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
             $sheet->getStyle($cellRange)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
@@ -324,6 +325,173 @@ class ProfileController extends Controller
         }
         // Set the file name and save the Excel file
         $fileName = 'users.xlsx';
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($fileName);
+
+        // Return the file as a response
+        return response()->download($fileName)->deleteFileAfterSend(true);
+
+    }
+
+    public function get_profile_by_id(Request $request)
+    {
+
+        $user = User::find($request->id);
+
+        //         Create a new Excel file
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set headers
+        $sheet->setCellValue('A1', 'user_id');
+        $sheet->setCellValue('B1', 'X tag');
+        $sheet->setCellValue('C1', 'First Name');
+        $sheet->setCellValue('D1', 'Last name ');
+        $sheet->setCellValue('E1', 'job title');
+        $sheet->setCellValue('F1', 'business name');
+        $sheet->setCellValue('G1', 'location');
+        $sheet->setCellValue('H1', 'bio');
+        $sheet->setCellValue('I1', 'phone number');
+        $sheet->setCellValue('J1', 'phone number secondary');
+        $sheet->setCellValue('K1', 'email');
+        $sheet->setCellValue('L1', 'uuid');
+        $sheet->setCellValue('M1', 'link');
+
+        $cellRange1 = 'A'. 1 .':M'. 1;
+        $sheet->getStyle($cellRange1)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+        $sheet->getStyle($cellRange1)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle($cellRange1)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+        $sheet->getStyle($cellRange1)->getAlignment()->setWrapText(true);
+        $sheet->getStyle($cellRange1)->getAlignment()->setIndent(1);
+        $sheet->getStyle($cellRange1)->getAlignment()->setShrinkToFit(true);
+        // Populate user data
+            $row =  2;
+            $sheet->setCellValue('A'.$row, $user->id);
+            $sheet->setCellValue('B'.$row, $user->userName);
+            $sheet->setCellValue('C'.$row, $user->profile->firstName ?? 'NULL');
+            $sheet->setCellValue('D'.$row, $user->profile->lastName ?? 'NULL');
+            $sheet->setCellValue('E'.$row, $user->profile->jobTitle ?? 'NULL');
+            $sheet->setCellValue('F'.$row, $user->profile->businessName ?? 'NULL');
+            $sheet->setCellValue('G'.$row, $user->profile->location ?? 'NULL');
+            $sheet->setCellValue('H'.$row, $user->profile->bio ?? 'NULL');
+            $sheet->setCellValue('I'.$row, $user->profile->phoneNum ?? 'NULL');
+            $sheet->setCellValue('J'.$row, $user->profile->phoneNumSecondary ?? 'NULL');
+            $sheet->setCellValue('K'.$row, $user->profile->email ?? 'NULL');
+            $sheet->setCellValue('L'.$row, $user->uuid);
+            $sheet->setCellValue('M'.$row, 'https://user.x-tag.tech/?user='.$user->uuid);
+            $leteer = 'M';
+
+            if (!$user->profile->primary->isEmpty()) {
+                $sheet->setCellValue(++$leteer.$row, "primary link");
+                foreach ($user->profile->primary as $primaryLink) {
+
+                    $sheet->setCellValue(++$leteer.$row, $primaryLink->name);
+                    $sheet->setCellValue(++$leteer.$row, $primaryLink->pivot->value);
+                }
+            }
+            if (!$user->profile->links->isEmpty()) {
+
+            $sheet->setCellValue(++$leteer.$row, "secondery link");
+            foreach ($user->profile->links as $Link) {
+                $sheet->setCellValue(++$leteer.$row, $Link->name_link);
+                $sheet->setCellValue(++$leteer.$row, $Link->link);
+            }
+            }
+            // Set cell styling and spacing
+            $cellRange = 'A'.$row.':CA'.$row;
+            $sheet->getStyle($cellRange)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+            $sheet->getStyle($cellRange)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle($cellRange)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+            $sheet->getStyle($cellRange)->getAlignment()->setWrapText(true);
+            $sheet->getStyle($cellRange)->getAlignment()->setIndent(1);
+            $sheet->getStyle($cellRange)->getAlignment()->setShrinkToFit(true);
+
+
+        // Set the file name and save the Excel file
+        $fileName = 'user.xlsx';
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($fileName);
+
+        // Return the file as a response
+        return response()->download($fileName)->deleteFileAfterSend(true);
+
+    }
+    public function get_profile_by_phone(Request $request)
+    {
+
+        $user = Profile::where('phoneNum',$request->phone)->first()->user;
+
+        //         Create a new Excel file
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set headers
+        $sheet->setCellValue('A1', 'user_id');
+        $sheet->setCellValue('B1', 'X tag');
+        $sheet->setCellValue('C1', 'First Name');
+        $sheet->setCellValue('D1', 'Last name ');
+        $sheet->setCellValue('E1', 'job title');
+        $sheet->setCellValue('F1', 'business name');
+        $sheet->setCellValue('G1', 'location');
+        $sheet->setCellValue('H1', 'bio');
+        $sheet->setCellValue('I1', 'phone number');
+        $sheet->setCellValue('J1', 'phone number secondary');
+        $sheet->setCellValue('K1', 'email');
+        $sheet->setCellValue('L1', 'uuid');
+        $sheet->setCellValue('M1', 'link');
+
+        $cellRange1 = 'A'. 1 .':M'. 1;
+        $sheet->getStyle($cellRange1)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+        $sheet->getStyle($cellRange1)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle($cellRange1)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+        $sheet->getStyle($cellRange1)->getAlignment()->setWrapText(true);
+        $sheet->getStyle($cellRange1)->getAlignment()->setIndent(1);
+        $sheet->getStyle($cellRange1)->getAlignment()->setShrinkToFit(true);
+        // Populate user data
+        $row =  2;
+        $sheet->setCellValue('A'.$row, $user->id);
+        $sheet->setCellValue('B'.$row, $user->userName);
+        $sheet->setCellValue('C'.$row, $user->profile->firstName ?? 'NULL');
+        $sheet->setCellValue('D'.$row, $user->profile->lastName ?? 'NULL');
+        $sheet->setCellValue('E'.$row, $user->profile->jobTitle ?? 'NULL');
+        $sheet->setCellValue('F'.$row, $user->profile->businessName ?? 'NULL');
+        $sheet->setCellValue('G'.$row, $user->profile->location ?? 'NULL');
+        $sheet->setCellValue('H'.$row, $user->profile->bio ?? 'NULL');
+        $sheet->setCellValue('I'.$row, $user->profile->phoneNum ?? 'NULL');
+        $sheet->setCellValue('J'.$row, $user->profile->phoneNumSecondary ?? 'NULL');
+        $sheet->setCellValue('K'.$row, $user->profile->email ?? 'NULL');
+        $sheet->setCellValue('L'.$row, $user->uuid);
+        $sheet->setCellValue('M'.$row, 'https://user.x-tag.tech/?user='.$user->uuid);
+        $leteer = 'M';
+
+        if (!$user->profile->primary->isEmpty()) {
+            $sheet->setCellValue(++$leteer.$row, "primary link");
+            foreach ($user->profile->primary as $primaryLink) {
+
+                $sheet->setCellValue(++$leteer.$row, $primaryLink->name);
+                $sheet->setCellValue(++$leteer.$row, $primaryLink->pivot->value);
+            }
+        }
+        if (!$user->profile->links->isEmpty()) {
+
+            $sheet->setCellValue(++$leteer.$row, "secondery link");
+            foreach ($user->profile->links as $Link) {
+                $sheet->setCellValue(++$leteer.$row, $Link->name_link);
+                $sheet->setCellValue(++$leteer.$row, $Link->link);
+            }
+        }
+        // Set cell styling and spacing
+        $cellRange = 'A'.$row.':CA'.$row;
+        $sheet->getStyle($cellRange)->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+        $sheet->getStyle($cellRange)->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle($cellRange)->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+        $sheet->getStyle($cellRange)->getAlignment()->setWrapText(true);
+        $sheet->getStyle($cellRange)->getAlignment()->setIndent(1);
+        $sheet->getStyle($cellRange)->getAlignment()->setShrinkToFit(true);
+
+
+        // Set the file name and save the Excel file
+        $fileName = 'user.xlsx';
         $writer = new Xlsx($spreadsheet);
         $writer->save($fileName);
 
