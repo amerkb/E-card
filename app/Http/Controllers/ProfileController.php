@@ -385,16 +385,16 @@ class ProfileController extends Controller
                 $sheet->setCellValue(++$leteer.$row, "primary link");
                 foreach ($user->profile->primary as $primaryLink) {
 
-                    $sheet->setCellValue(++$leteer.$row, $primaryLink->name);
-                    $sheet->setCellValue(++$leteer.$row, $primaryLink->pivot->value);
+                    $sheet->setCellValue(++$leteer."1", $primaryLink->name);
+                    $sheet->setCellValue($leteer.$row, $primaryLink->pivot->value);
                 }
             }
             if (!$user->profile->links->isEmpty()) {
 
             $sheet->setCellValue(++$leteer.$row, "secondery link");
             foreach ($user->profile->links as $Link) {
-                $sheet->setCellValue(++$leteer.$row, $Link->name_link);
-                $sheet->setCellValue(++$leteer.$row, $Link->link);
+                $sheet->setCellValue(++$leteer.'1', $Link->name_link);
+                $sheet->setCellValue($leteer.$row, $Link->link);
             }
             }
             // Set cell styling and spacing
@@ -468,16 +468,16 @@ class ProfileController extends Controller
             $sheet->setCellValue(++$leteer.$row, "primary link");
             foreach ($user->profile->primary as $primaryLink) {
 
-                $sheet->setCellValue(++$leteer.$row, $primaryLink->name);
-                $sheet->setCellValue(++$leteer.$row, $primaryLink->pivot->value);
+                $sheet->setCellValue(++$leteer.'1', $primaryLink->name);
+                $sheet->setCellValue($leteer.$row, $primaryLink->pivot->value);
             }
         }
         if (!$user->profile->links->isEmpty()) {
 
             $sheet->setCellValue(++$leteer.$row, "secondery link");
             foreach ($user->profile->links as $Link) {
-                $sheet->setCellValue(++$leteer.$row, $Link->name_link);
-                $sheet->setCellValue(++$leteer.$row, $Link->link);
+                $sheet->setCellValue(++$leteer.'1', $Link->name_link);
+                $sheet->setCellValue($leteer.$row, $Link->link);
             }
         }
         // Set cell styling and spacing
