@@ -28,6 +28,7 @@ class ProfileResource extends JsonResource
             'bgColor' => $this->bgColor,
             'buttonColor' => $this->buttonColor,
             'phoneNum' => $this->phoneNum,
+            'isPersonal'=>$this->isPersonal,
             'email' => $this->email,
             'views' => isset($this->views) ? $this->views : 0,
             'primary_links' => ProfilePrimaryLinkResource::collection($this->primary),

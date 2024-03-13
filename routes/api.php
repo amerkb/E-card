@@ -55,10 +55,14 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::get('get_links_with_visit', [LinkController::class, 'get_links_with_visit']);
     Route::put('change_email', [AuthController::class, 'change_email']);
+
+//    profile
     Route::prefix('profile')->group(function () {
         Route::post('/create_personal_data', [ProfileController::class, 'create_personal_data']);
         Route::post('/create_links', [ProfileController::class, 'create_links']);
         Route::post('/create_other_data', [ProfileController::class, 'create_other_data']);
         Route::post('/{profile}', [ProfileController::class, 'update']);
+        Route::put('update/theme/{profile}', [ProfileController::class, 'updateTheme']);
+
     });
 });

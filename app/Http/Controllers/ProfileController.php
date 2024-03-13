@@ -6,6 +6,7 @@ use App\Http\Requests\EditProfileRequest;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\step2ProfileRequest;
 use App\Http\Requests\step3ProfileRequest;
+use App\Http\Requests\UpdateThemeForProfileRequest;
 use App\Http\Resources\LinkResource;
 use App\Http\Resources\ProfilePrimaryLinkResource;
 use App\Http\Resources\ProfileResource;
@@ -156,6 +157,13 @@ class ProfileController extends Controller
 
         return response()->json(['data' => new ProfileResource($profile), 'message' => 'Data Saved Succcessfully']);
     }
+    public function updateTheme(UpdateThemeForProfileRequest $request, Profile $profile)
+    {
+
+        $profile->update(['theme_id'=>$request->theme_id]);
+        return response()->json(['data' => new ProfileResource($profile), 'message' => 'Data Saved Successfully']);
+    }
+
 
     public function visitProfile(Profile $profile)
     {
